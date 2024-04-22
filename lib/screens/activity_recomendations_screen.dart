@@ -25,6 +25,7 @@ class _ActivityRecommendationsScreenState extends State<ActivityRecommendationsS
 
   Future<void> _checkLocationPermissionAndLoad() async {
     LocationPermission permission = await Geolocator.checkPermission();
+    log('permission: $permission');
     if (permission == LocationPermission.denied || permission == LocationPermission.deniedForever) {
       _loadActivityRecommendations();
     } else {
@@ -36,6 +37,7 @@ class _ActivityRecommendationsScreenState extends State<ActivityRecommendationsS
     try {
       Position position = await Geolocator.getCurrentPosition();
       setState(() {
+        log('data: $position');
         _currentPosition = position;
         _latitudeController.text = position.latitude.toString();
         _longitudeController.text = position.longitude.toString();

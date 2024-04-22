@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:http/http.dart' as http;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class CurrencyService {
-  static const String apiKey = 'd56a3f6d9bd7ddf617438391';
-  static const String apiUrl = 'https://v6.exchangerate-api.com/v6/$apiKey/latest/';
+  static final String apiKey =  dotenv.env['ER_API_KEY'] as String;
+  static final String apiUrl = 'https://v6.exchangerate-api.com/v6/$apiKey/latest/';
 
   Future<double> convertCurrency(double amount, String fromCurrency, String toCurrency) async {
     try {

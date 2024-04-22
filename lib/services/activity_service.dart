@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:http/http.dart' as http;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class ActivityService {
-  static const String _apiKey = '6dtHCbMT5tOyKXO2oUs9cJDvTKCE9cyk';
-  static const String _apiSecret = 'uZuSp8Ntfeti2wXY';
+  static final String _apiKey = dotenv.env['AMADEUS_API_KEY'] as String;
+  static final String _apiSecret = dotenv.env['AMADEUS_API_SECRET'] as String;
   static const String _baseUrl = 'https://test.api.amadeus.com/v1/';
   static String? _accessToken;
 
@@ -36,6 +37,8 @@ class ActivityService {
     final String poiUrl = '${_baseUrl}reference-data/locations/pois?latitude=$latitude&longitude=$longitude&radius=1';
     final String activitiesUrl = '${_baseUrl}shopping/activities?latitude=$latitude&longitude=$longitude&radius=1';
 
+    log('coord: $latitude');
+    log('coord: $longitude');
 
     final List<http.Response> responses = await Future.wait([
       http.get(Uri.parse(poiUrl), headers: {
