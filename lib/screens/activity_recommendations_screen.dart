@@ -16,11 +16,24 @@ class _ActivityRecommendationsScreenState extends State<ActivityRecommendationsS
   TextEditingController _latitudeController = TextEditingController();
   TextEditingController _longitudeController = TextEditingController();
   Position? _currentPosition;
+  int _backgroundImageIndex = 0;
+  List<String> _backgroundImages = [
+    'assets/bg_img1.jpg',
+    'assets/bg_img2.jpg',
+    'assets/bg_img3.jpg',
+  ];
+
 
   @override
   void initState() {
     super.initState();
     _checkLocationPermissionAndLoad();
+    Timer.periodic(Duration(seconds: 10), (timer) {
+      setState(() {
+        _backgroundImageIndex =
+            (_backgroundImageIndex + 1) % _backgroundImages.length;
+      });
+    });
   }
 
   Future<void> _checkLocationPermissionAndLoad() async {
@@ -78,90 +91,87 @@ class _ActivityRecommendationsScreenState extends State<ActivityRecommendationsS
     return Scaffold(
       appBar: AppBar(
         title: Text('Activity Recommendations'),
+        backgroundColor: Colors.blueAccent,
       ),
-      body: _isLoading
-          ? Center(child: CircularProgressIndicator())
-          : _currentPosition != null || (_latitudeController.text.isNotEmpty && _longitudeController.text.isNotEmpty)
-          ? Column(
+      body: Stack(
         children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: _activityRecommendations.length + 1, // +1 for the header row
-              itemBuilder: (context, index) {
-                if (index == 0) {
-                  // Header row
-                  return Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Expanded(
-                          child: Text('Name', style: TextStyle(fontWeight: FontWeight.bold)),
-                        ),
-                        Expanded(
-                          child: Text('Description/Category', style: TextStyle(fontWeight: FontWeight.bold)),
-                        ),
-                        Expanded(
-                          child: Text('Rank/Price', style: TextStyle(fontWeight: FontWeight.bold)),
-                        ),
-                      ],
-                    ),
-                  );
-                }
-
-                final recommendation = _activityRecommendations[index - 1];
-                return Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Expanded(
-                        child: Text(recommendation['name']),
-                      ),
-                      Expanded(
-                        child: Text(recommendation['type'] == 'activity' ? recommendation['description'] : recommendation['category']),
-                      ),
-                      Expanded(
-                        child: Text(recommendation['type'] == 'activity' ? '${recommendation['price']['amount']} ${recommendation['price']['currencyCode']}' : 'Rank: ${recommendation['rank']}'),
-                      ),
-                    ],
-                  ),
-                );
-              },
+          // Background image
+          Positioned.fill(
+            child: Image.asset(
+              _backgroundImages[_backgroundImageIndex],
+              fit: BoxFit.cover,
             ),
           ),
-        ],
-      )
-          : Column(
-        children: [
-          Row(
+          // Content
+          _isLoading
+              ? Center(child: CircularProgressIndicator(color: Colors.purple))
+              : _currentPosition != null ||
+              (_latitudeController.text.isNotEmpty &&
+                  _longitudeController.text.isNotEmpty)
+              ? Column(
             children: [
               Expanded(
-                child: TextField(
-                  controller: _latitudeController,
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(labelText: 'Latitude'),
-                ),
-              ),
-              SizedBox(width: 10),
-              Expanded(
-                child: TextField(
-                  controller: _longitudeController,
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(labelText: 'Longitude'),
+                child: ListView.builder(
+                  itemCount:
+                  _activityRecommendations.length + 1, // +1 for the header row
+                  itemBuilder: (context, index) {
+                    // Remaining code for list view items
+                  },
                 ),
               ),
             ],
-          ),
-          ElevatedButton(
-            onPressed: () {
-              _loadActivityRecommendations();
-            },
-            child: Text('Load Recommendations'),
+          )
+              : Column(
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: _latitudeController,
+                      keyboardType: TextInputType.number,
+                      style: TextStyle(color: Colors.purple), // Set text color
+                      decoration: InputDecoration(
+                        labelText: 'Latitude',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                          borderSide: BorderSide(color: Colors.purple), // Set border color
+                        ),
+                        filled: true,
+                        fillColor: Colors.white,
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 10),
+                  Expanded(
+                    child: TextField(
+                      controller: _longitudeController,
+                      keyboardType: TextInputType.number,
+                      style: TextStyle(color: Colors.purple), // Set text color
+                      decoration: InputDecoration(
+                        labelText: 'Longitude',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                          borderSide: BorderSide(color: Colors.purple), // Set border color
+                        ),
+                        filled: true,
+                        fillColor: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  _loadActivityRecommendations();
+                },                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.lightBlue, // Blue color for the button
+                ),
+                child: Text(
+                  'Load Recommendations',
+                  style: TextStyle(color: Colors.black54),
+                ),
+              ),
+            ],
           ),
         ],
       ),

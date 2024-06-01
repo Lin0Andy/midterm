@@ -17,33 +17,24 @@ class _FlightSearchFormState extends State<FlightSearchForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Search Flights")),
+      appBar: AppBar(
+        title: Text("Search Flights"),
+        backgroundColor: Colors.blueAccent,
+      ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(
           children: [
-            TextField(
-              controller: _originController,
-              decoration: InputDecoration(labelText: 'Origin'),
-            ),
-            TextField(
-              controller: _destinationController,
-              decoration: InputDecoration(labelText: 'Destination'),
-            ),
-            TextField(
-              controller: _departureDateController,
-              decoration: InputDecoration(labelText: 'Departure Date'),
-            ),
-            TextField(
-              controller: _returnDateController,
-              decoration: InputDecoration(labelText: 'Return Date'),
-            ),
-            TextField(
-              controller: _adultsController,
-              decoration: InputDecoration(labelText: 'Adults'),
-              keyboardType: TextInputType.number,
-            ),
-            SizedBox(height: 16),
+            _buildTextField(_originController, 'Origin', Icons.flight_takeoff),
+            SizedBox(height: 16.0),
+            _buildTextField(_destinationController, 'Destination', Icons.flight_land),
+            SizedBox(height: 16.0),
+            _buildTextField(_departureDateController, 'Departure Date', Icons.date_range),
+            SizedBox(height: 16.0),
+            _buildTextField(_returnDateController, 'Return Date', Icons.date_range),
+            SizedBox(height: 16.0),
+            _buildTextField(_adultsController, 'Adults', Icons.person, isNumeric: true),
+            SizedBox(height: 32.0),
             ElevatedButton(
               onPressed: () {
                 final origin = _originController.text;
@@ -63,10 +54,33 @@ class _FlightSearchFormState extends State<FlightSearchForm> {
                 Navigator.pushNamed(context, '/flights_results');
               },
               child: Text('Search Flights'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blueAccent,
+                padding: EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
+                textStyle: TextStyle(fontSize: 18.0),
+              ),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildTextField(
+      TextEditingController controller, String label, IconData icon,
+      {bool isNumeric = false}) {
+    return TextField(
+      controller: controller,
+      decoration: InputDecoration(
+        labelText: label,
+        prefixIcon: Icon(icon, color: Colors.blueAccent),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        filled: true,
+        fillColor: Colors.blue[50],
+      ),
+      keyboardType: isNumeric ? TextInputType.number : TextInputType.text,
     );
   }
 }

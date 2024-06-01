@@ -7,7 +7,8 @@ class CurrencyConverterScreen extends StatefulWidget {
   CurrencyConverterScreen({required this.viewModel});
 
   @override
-  _CurrencyConverterScreenState createState() => _CurrencyConverterScreenState();
+  _CurrencyConverterScreenState createState() =>
+      _CurrencyConverterScreenState();
 }
 
 class _CurrencyConverterScreenState extends State<CurrencyConverterScreen> {
@@ -17,7 +18,8 @@ class _CurrencyConverterScreenState extends State<CurrencyConverterScreen> {
   void initState() {
     super.initState();
     // Initialize TextEditingController with initial value from viewModel
-    _toAmountController = TextEditingController(text: widget.viewModel.toAmount);
+    _toAmountController =
+        TextEditingController(text: widget.viewModel.toAmount);
     // Listen for changes in the toAmount and update the TextEditingController accordingly
     widget.viewModel.addListener(_onToAmountChanged);
   }
@@ -42,51 +44,74 @@ class _CurrencyConverterScreenState extends State<CurrencyConverterScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Currency Converter'),
+        backgroundColor: Colors.blueAccent,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            TextField(
-              onChanged: (value) => widget.viewModel.fromAmountChanged(value),
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                labelText: 'Amount to Convert',
-                hintText: 'Enter amount to convert',
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/bg_image.jpg'), // Set your background image here
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              TextField(
+                onChanged: (value) =>
+                    widget.viewModel.fromAmountChanged(value),
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  labelText: 'Amount to Convert',
+                  hintText: 'Enter amount to convert',
+                  filled: true,
+                  fillColor: Colors.green[200], // Green color for input field
+                ),
               ),
-            ),
-            SizedBox(height: 16.0),
-            TextField(
-              onChanged: (value) => widget.viewModel.fromCurrencyChanged(value),
-              decoration: InputDecoration(
-                labelText: 'Initial Currency',
-                hintText: 'Enter currency code (e.g., USD)',
+              SizedBox(height: 16.0),
+              TextField(
+                onChanged: (value) =>
+                    widget.viewModel.fromCurrencyChanged(value),
+                decoration: InputDecoration(
+                  labelText: 'Initial Currency',
+                  hintText: 'Enter currency code (e.g., USD)',
+                  filled: true,
+                  fillColor: Colors.green[200], // Green color for input field
+                ),
               ),
-            ),
-            SizedBox(height: 16.0),
-            TextField(
-              onChanged: (value) => widget.viewModel.toCurrencyChanged(value),
-              decoration: InputDecoration(
-                labelText: 'Target Currency',
-                hintText: 'Enter currency code (e.g., EUR)',
+              SizedBox(height: 16.0),
+              TextField(
+                onChanged: (value) =>
+                    widget.viewModel.toCurrencyChanged(value),
+                decoration: InputDecoration(
+                  labelText: 'Target Currency',
+                  hintText: 'Enter currency code (e.g., EUR)',
+                  filled: true,
+                  fillColor: Colors.blue[200], // Blue color for input field
+                ),
               ),
-            ),
-            SizedBox(height: 16.0),
-            TextField(
-              controller: _toAmountController,
-              readOnly: true,
-              decoration: InputDecoration(
-                labelText: 'Converted Amount',
-                hintText: 'Converted amount will be displayed here',
+              SizedBox(height: 16.0),
+              TextField(
+                controller: _toAmountController,
+                readOnly: true,
+                decoration: InputDecoration(
+                  labelText: 'Converted Amount',
+                  hintText: 'Converted amount will be displayed here',
+                  filled: true,
+                  fillColor: Colors.blue[200], // Blue color for input field
+                ),
               ),
-            ),
-            SizedBox(height: 32.0),
-            ElevatedButton(
-              onPressed: () => widget.viewModel.convert(),
-              child: Text('Convert'),
-            ),
-          ],
+              SizedBox(height: 32.0),
+              ElevatedButton(
+                onPressed: () => widget.viewModel.convert(),
+                child: Text('Convert'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue, // Blue color for button
+                ),
+              ),
+            ],
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
