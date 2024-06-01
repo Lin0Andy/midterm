@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import '/viewmodels/activity_recommendations_viewmodel.dart';
+import '/view-models/activity_recommendations_viewmodel.dart';
 
 class ActivityRecommendationsScreen extends StatefulWidget {
   @override

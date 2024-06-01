@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '/viewmodels/currency_converter_viewmodel.dart';
+import '/view-models/currency_converter_viewmodel.dart';
 
 class CurrencyConverterScreen extends StatefulWidget {
   final CurrencyConverterViewModel viewModel;

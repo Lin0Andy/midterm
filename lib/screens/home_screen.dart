@@ -12,7 +12,7 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            _buildMenuItem(context, 'Hotels\' Search', Icons.hotel, '/hotels'),
+            _buildMenuItem(context, 'Flight Search', Icons.flight, '/flight_search_form'),
             _buildMenuItem(context, 'Points of Interest', Icons.location_on, '/activity_recommendation'),
             _buildMenuItem(context, 'Currency Converter', Icons.monetization_on, '/currency_converter'),
           ],
